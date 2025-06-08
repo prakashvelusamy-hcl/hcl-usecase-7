@@ -11,7 +11,7 @@
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2-http-sg"
   description = "Allow HTTP and SSH"
-  vpc_id      = var.vpc_id 
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 80
@@ -37,12 +37,12 @@ resource "aws_security_group" "ec2_sg" {
 
 
 resource "aws_instance" "public_instances" {
-  count         = var.public_instance
-  ami           = "ami-0e35ddab05955cf57"
-  instance_type = "t3.micro"
-  subnet_id     = var.public_subnet_ids[count.index]
+  count                       = var.public_instance
+  ami                         = "ami-0e35ddab05955cf57"
+  instance_type               = "t3.micro"
+  subnet_id                   = var.public_subnet_ids[count.index]
   associate_public_ip_address = true
-#   security_groups = [data.aws_security_group.sg.id]
+  #   security_groups = [data.aws_security_group.sg.id]
   security_groups = [aws_security_group.ec2_sg.id]
 
   user_data = <<-EOF
@@ -62,6 +62,6 @@ resource "aws_instance" "public_instances" {
 
 
 
- 
+
 
 

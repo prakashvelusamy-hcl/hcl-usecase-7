@@ -18,6 +18,9 @@ output "internet_gateway_id" {
   value = module.vpc.internet_gateway_id
 }
 
+output "api_url" {
+  value = module.api_gateway.api_url
+}
 # output "instance_ids" {
 #   value = module.ec2.public_instance_ids
 # }
