@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_exec" {
-  name = "lambda_exec_role"
+  name = "lambda_exec_role_1"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -13,7 +13,7 @@ resource "aws_iam_role" "lambda_exec" {
   })
 }
 resource "aws_iam_policy" "lambda_ecr_policy" {
-  name        = "LambdaECRImagePullPolicy"
+  name        = "LambdaECRImagePullPolicy_1"
   description = "Allows Lambda to pull Docker image from ECR"
 
   policy = jsonencode({

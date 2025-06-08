@@ -1,4 +1,4 @@
 import sys
 
 def handler(event, context):
-    return 'Hello from AWS Lambda using Python! test 1'
+    return 'Hello World'
