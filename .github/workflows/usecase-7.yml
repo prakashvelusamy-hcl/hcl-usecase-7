@@ -57,7 +57,7 @@ jobs:
           aws ecr create-repository --repository-name "$IMAGE_NAME"
 
       - name: Build Docker image
-        run: docker build -t $IMAGE_NAME -f ${{ env.DOCKER_DIR }}/Dockerfile
+        run: docker build -t $IMAGE_NAME -f ${{ env.DOCKER_DIR }}/Dockerfile ${{ env.DOCKER_DIR }}
 
       - name: Tag Docker image
         run: |
