@@ -3,4 +3,3 @@ pub_sub_count   = 2
 priv_sub_count  = 2
 nat_count       = 1
 public_instance = 0
-state_file = "hcl-usecase-7/dev/terraform.tfstate"
