@@ -28,7 +28,9 @@ resource "aws_iam_policy" "lambda_ecr_policy" {
           "ecr:GetAuthorizationToken",
           "ec2:CreateNetworkInterface",
           "ec2:DescribeNetworkInterfaces",
-          "ec2:DeleteNetworkInterface"
+          "ec2:DeleteNetworkInterface",
+          "xray:PutTelemetryRecords",
+          "xray:PutTraceSegments"
         ],
         Resource : "*"
       }
