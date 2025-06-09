@@ -66,18 +66,18 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform init ${{ env.DOCKER_DIR }}
+        run: terraform init
 
       - name: Terraform Validate
-        run: terraform validate ${{ env.DOCKER_DIR }}
+        run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan ${{ env.DOCKER_DIR }}
+        run: terraform plan
 
       - name: Terraform Apply
         if: contains(github.event.head_commit.message, 'terraform apply') || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply')
-        run: terraform apply -auto-approve ${{ env.DOCKER_DIR }}
+        run: terraform apply -auto-approve
 
       - name: Terraform Destroy
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve ${{ env.DOCKER_DIR }}
+        run: terraform destroy -auto-approve
