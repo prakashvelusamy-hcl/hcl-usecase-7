@@ -63,7 +63,7 @@ resource "aws_lambda_function" "docker_lambda" {
 
   package_type = "Image"
 
-  image_uri = "495599733393.dkr.ecr.ap-south-1.amazonaws.com/my-app:latest"
+  image_uri = "495599733393.dkr.ecr.ap-south-1.amazonaws.com/my-app:v1"
 
   role = aws_iam_role.lambda_exec.arn
 
