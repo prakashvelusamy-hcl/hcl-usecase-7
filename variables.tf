@@ -2,6 +2,10 @@ variable "vpc_cidr" {
   description = "CIDR block for the VPC"
   type        = string
 }
+variable "env" {
+description = " The Environment"
+type         = string
+
 variable "pub_sub_count" {
   description = "Number of public subnets"
   type        = number

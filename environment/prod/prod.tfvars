@@ -1,4 +1,5 @@
 vpc_cidr        = "10.12.0.0/16"
+env             = "prod"
 pub_sub_count   = 2
 priv_sub_count  = 2
 nat_count       = 1

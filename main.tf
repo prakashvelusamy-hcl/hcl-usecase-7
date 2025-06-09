@@ -5,6 +5,7 @@ module "vpc" {
   pub_sub_count  = var.pub_sub_count
   priv_sub_count = var.priv_sub_count
   nat_count      = var.nat_count
+  env            = var.env
 }
 
 module "lambda" {

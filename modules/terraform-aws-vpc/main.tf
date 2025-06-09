@@ -2,6 +2,7 @@ resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
   tags = {
     Name = "Main"
+    Environment ="var.env"
   }
 }
 data "aws_availability_zones" "az" {
