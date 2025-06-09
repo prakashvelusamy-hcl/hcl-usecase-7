@@ -57,7 +57,7 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
-          docker push $ECR_REGISTRY/$IMAGE_NAME:latest
+          docker push $ECR_REGISTRY/$IMAGE_NAME:v1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
