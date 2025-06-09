@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket  = "aws-state-s3"
-    key     = "hcl-usecase-7/terraform.tfstate"
+    key     = var.state_file
     profile = "devops"
     region  = "ap-south-1"
     encrypt = true

@@ -20,3 +20,6 @@ variable "public_instance" {
   description = "Number of public EC2 instances to create"
   type        = number
 }
+variable "state_file" {
+description = "The statefile path for each environmet"
+type = string

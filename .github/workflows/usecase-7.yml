@@ -26,6 +26,7 @@ jobs:
     env:
       IMAGE_NAME: my-app
       AWS_REGION: ap-south-1
+      DOCKER_DIR: docker  
 
     steps:
       - name: Checkout code
@@ -47,7 +48,7 @@ jobs:
           aws ecr create-repository --repository-name "$IMAGE_NAME"
 
       - name: Build Docker image
-        run: docker build -t $IMAGE_NAME .
+        run: docker build -t $IMAGE_NAME -f ${{ env.DOCKER_DIR }}/Dockerfile ${{ env.DOCKER_DIR }}
 
       - name: Tag Docker image
         run: |
@@ -65,18 +66,18 @@ jobs:
           terraform_version: 1.6.6
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init ${{ env.DOCKER_DIR }}
 
-      - name: Terraform Validate 
-        run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate ${{ env.DOCKER_DIR }}
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan ${{ env.DOCKER_DIR }}
 
       - name: Terraform Apply
         if: contains(github.event.head_commit.message, 'terraform apply') || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply')
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve ${{ env.DOCKER_DIR }}
 
       - name: Terraform Destroy
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve ${{ env.DOCKER_DIR }}
