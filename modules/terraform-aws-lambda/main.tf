@@ -60,20 +60,20 @@ resource "aws_security_group" "lambda_sg" {
 }
 resource "aws_lambda_function" "docker_lambda" {
   function_name = "my-docker-lambda"
-
   package_type = "Image"
-
   image_uri = "495599733393.dkr.ecr.ap-south-1.amazonaws.com/my-app:v1"
-
   role = aws_iam_role.lambda_exec.arn
-
   timeout     = 30
   memory_size = 128
   vpc_config {
     subnet_ids         = var.private_subnet_id
     security_group_ids = [aws_security_group.lambda_sg.id]
   }
+  tracing_config {
+    mode = "Active"
+  }
 }
+
 
 resource "aws_lambda_permission" "apigw_invoke" {
   statement_id  = "AllowAPIGatewayInvoke"
@@ -84,4 +84,74 @@ resource "aws_lambda_permission" "apigw_invoke" {
 }
 
 
+resource "aws_cloudwatch_log_group" "api_gateway" {
+  name              = "/aws/apigateway/lambda_api_gateway"
+  retention_in_days = 7
+}
 
+resource "aws_cloudwatch_log_group" "lambda" {
+  name              = "/aws/lambda/lambda_function_name"
+  retention_in_days = 7
+}
+
+resource "aws_cloudwatch_dashboard" "main" {
+  dashboard_name = "Lambda-dashboard"
+  dashboard_body = jsonencode({
+    widgets = [
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+        properties = {
+          metrics = [
+            [
+              "AWS/ApiGateway",
+              "4XXError",
+              "ApiName",
+              var.api_name
+            ],
+            [
+              "AWS/ApiGateway",
+              "5XXError",
+              "ApiName",
+              lambda-http-api
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = "ap-south-1"
+          title  = "API Gateway Errors"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 12
+        y      = 0
+        width  = 12
+        height = 6
+        properties = {
+          metrics = [
+            [
+              "AWS/Lambda",
+              "Errors",
+              "FunctionName",
+              my-docker-lambda
+            ],
+            [
+              "AWS/Lambda",
+              "Throttles",
+              "FunctionName",
+              my-docker-lambda
+            ]
+          ]
+          period = 300
+          stat   = "Sum"
+          region = "ap-south-1"
+          title  = "Lambda Errors/Throttles"
+        }
+      }
+    ]
+  })
+}
