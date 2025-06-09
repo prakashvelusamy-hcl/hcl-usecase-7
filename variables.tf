@@ -5,6 +5,7 @@ variable "vpc_cidr" {
 variable "env" {
 description = " The Environment"
 type         = string
+}
 
 variable "pub_sub_count" {
   description = "Number of public subnets"

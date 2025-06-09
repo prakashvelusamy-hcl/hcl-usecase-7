@@ -9,7 +9,7 @@ variable "pub_sub_count" {
 variable "env" {
 description = " The Environment"
 type = string
-
+}
 variable "priv_sub_count" {
   description = "Number of private subnets"
   type        = number
