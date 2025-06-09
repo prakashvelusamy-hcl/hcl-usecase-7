@@ -85,17 +85,17 @@ resource "aws_lambda_permission" "apigw_invoke" {
 
 
 resource "aws_cloudwatch_log_group" "api_gateway" {
-  name              = "/aws/apigateway/lambda_api_gateway"
+  name              = "/aws/apigateway/lambda-http-api"
   retention_in_days = 7
 }
 
 resource "aws_cloudwatch_log_group" "lambda" {
-  name              = "/aws/lambda/lambda_function_name"
+  name              = "/aws/lambda/my-docker-lambda"
   retention_in_days = 7
 }
 
 resource "aws_cloudwatch_dashboard" "main" {
-  dashboard_name = "Lambda-dashboard"
+  dashboard_name = "Docker-Lambda-dashboard"
   dashboard_body = jsonencode({
     widgets = [
       {
@@ -110,13 +110,13 @@ resource "aws_cloudwatch_dashboard" "main" {
               "AWS/ApiGateway",
               "4XXError",
               "ApiName",
-              var.api_name
+              "lambda-http-api"
             ],
             [
               "AWS/ApiGateway",
               "5XXError",
               "ApiName",
-              lambda-http-api
+              "lambda-http-api"
             ]
           ]
           period = 300
@@ -137,13 +137,13 @@ resource "aws_cloudwatch_dashboard" "main" {
               "AWS/Lambda",
               "Errors",
               "FunctionName",
-              my-docker-lambda
+              "my-docker-lambda"
             ],
             [
               "AWS/Lambda",
               "Throttles",
               "FunctionName",
-              my-docker-lambda
+              "my-docker-lambda"
             ]
           ]
           period = 300
