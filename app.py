@@ -1,4 +1,4 @@
 import sys
 
 def handler(event, context):
-    return 'Hello World'
+    return 'Hello World-2'
