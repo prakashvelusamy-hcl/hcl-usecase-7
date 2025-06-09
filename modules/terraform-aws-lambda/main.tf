@@ -31,7 +31,7 @@ resource "aws_iam_policy" "lambda_ecr_policy" {
           "ec2:DeleteNetworkInterface",
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-         "logs:PutLogEvents"
+         "logs:PutLogEvents",
           "xray:PutTelemetryRecords",
           "xray:PutTraceSegments"
         ],
