@@ -14,6 +14,15 @@ on:
         options:
           - apply
           - destroy
+      workspace:
+        description: 'Terraform workspace to use'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
 
 permissions:
   id-token: write
@@ -48,7 +57,7 @@ jobs:
           aws ecr create-repository --repository-name "$IMAGE_NAME"
 
       - name: Build Docker image
-        run: docker build -t $IMAGE_NAME -f ${{ env.DOCKER_DIR }}/Dockerfile ${{ env.DOCKER_DIR }}
+        run: docker build -t $IMAGE_NAME -f ${{ env.DOCKER_DIR }}/Dockerfile
 
       - name: Tag Docker image
         run: |
@@ -74,10 +83,15 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
+      - name: Select Terraform Workspace
+        run: |
+          terraform workspace select ${{ github.event.inputs.workspace }} || terraform workspace new ${{ github.event.inputs.workspace }}
+
       - name: Terraform Apply
         if: contains(github.event.head_commit.message, 'terraform apply') || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply')
-        run: terraform apply -auto-approve
+        run: |
+          terraform apply -auto-approve -var-file="environment/${{ github.event.inputs.workspace }}/${{ github.event.inputs.workspace }}.tfvars"
 
       - name: Terraform Destroy
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -var-file="environment/${{ github.event.inputs.workspace }}/${{ github.event.inputs.workspace }}.tfvars"
