@@ -81,7 +81,7 @@ jobs:
       #   run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -auto-approve -var-file="environment${{ github.event.inputs.workspace }}/${{ github.event.inputs.workspace }}.tfvars"
+        run: terraform plan -auto-approve -var-file="environment/${{ github.event.inputs.workspace }}/${{ github.event.inputs.workspace }}.tfvars"
       - name: Install Terraform Docs
         run: |
           wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz         
