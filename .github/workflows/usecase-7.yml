@@ -106,7 +106,7 @@ jobs:
 
       - name: Run Checkov to Analyze Terraform Code
         run: |
-          checkov -d . --terraform 
+          checkov -d ./
           #checkov -d . --terraform --skip-check CKV_AWS_23 --skip-check CKV_AWS_24 # Optional: skip checks if needed
         continue-on-error: true  # This ensures that the workflow will continue even if Checkov finds issues
 
