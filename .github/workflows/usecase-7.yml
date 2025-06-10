@@ -77,11 +77,9 @@ jobs:
       - name: Terraform Init
         run: terraform init -reconfigure
 
-      # - name: Terraform Validate
-      #   run: terraform validate
-
       - name: Terraform Plan
         run: terraform plan -var-file="environment/${{ github.event.inputs.workspace }}/${{ github.event.inputs.workspace }}.tfvars"
+        
       - name: Install Terraform Docs
         run: |
           wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz         
@@ -102,11 +100,15 @@ jobs:
           git add README.md
           git commit -m "Update Terraform docs [skip ci]" || echo "No changes to commit"
           git push
-      # - name: Comment Terraform Docs
-      #   if: github.event_name == 'pull_request'
-      #   uses: marocchino/sticky-pull-request-comment@v2
-      #   with:
-      #     path: terraform-docs.md
+      - name: Install Checkov
+        run: |
+          pip install checkov
+
+      - name: Run Checkov to Analyze Terraform Code
+        run: |
+          checkov -d . --terraform 
+          #checkov -d . --terraform --skip-check CKV_AWS_23 --skip-check CKV_AWS_24 # Optional: skip checks if needed
+        continue-on-error: true  # This ensures that the workflow will continue even if Checkov finds issues
 
       - name: Select Terraform Workspace
         run: |
@@ -120,3 +122,4 @@ jobs:
       - name: Terraform Destroy
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
         run: terraform destroy -auto-approve -var-file="environment/${{ github.event.inputs.workspace }}/${{ github.event.inputs.workspace }}.tfvars"
+
