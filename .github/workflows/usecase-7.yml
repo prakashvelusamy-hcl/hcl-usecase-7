@@ -93,12 +93,20 @@ jobs:
         run: terraform-docs --version
       - name: Generate Terraform Docs
         run: |
-          terraform-docs markdown table ./ > terraform-docs.md
-      - name: Comment Terraform Docs
-        if: github.event_name == 'pull_request'
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          path: terraform-docs.md
+          terraform-docs markdown table ./ > README.md
+
+      - name: Commit Terraform Docs
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add README.md
+          git commit -m "Update Terraform docs [skip ci]" || echo "No changes to commit"
+          git push
+      # - name: Comment Terraform Docs
+      #   if: github.event_name == 'pull_request'
+      #   uses: marocchino/sticky-pull-request-comment@v2
+      #   with:
+      #     path: terraform-docs.md
 
       - name: Select Terraform Workspace
         run: |
